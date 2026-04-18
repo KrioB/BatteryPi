@@ -1,5 +1,5 @@
 [Unit]
-Description=Argon One control service
+Description=BatteryPi monitor service
 
 [Service]
 Type=simple
