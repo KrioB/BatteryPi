@@ -14,19 +14,27 @@
 import sys
 from pijuice import PiJuice
 
+# Set up I2C and PiJuice communication
 try:
   pijuice = PiJuice(1, 0x14)
 except Exception as err:
   sys.exit(1)
 
+# Clear LED
 try:
   pijuice.status.SetLedState('D2', [0 ,0, 0])
 except Exception as err:
   pass
 
+# Check if <shutdown -P> was performed
 if len(sys.argv) > 1 and sys.argv[1] == "poweroff":
   try:
+    # Blink RED
     pijuice.status.SetLedBlink('D2', 10, [255, 0, 0], 100, [0, 0, 0], 400)
-    pijuice.power.SetPowerOff(30)
+
+    # Schedule power cut off
+    # Shutdown process will wait up to 90s before continue
+    pijuice.power.SetPowerOff(100)
+
   except Exception as err:
     pass
